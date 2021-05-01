@@ -1,0 +1,13 @@
+{
+"required": true,
+"package": "faulkner.solitudinem.mixins",
+"minVersion": "0.7.11",
+"setSourceFile": true,
+"refmap": "mixins.solitudinem.refmap.json",
+"mixins": [
+],
+"client": [
+],
+"server": [
+]
+}

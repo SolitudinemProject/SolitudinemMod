@@ -1,0 +1,16 @@
+[
+{
+  "modid": "solitudinem",
+  "name": "Solitudinem",
+  "description": "none",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Faulkner,IKeXing"],
+  "credits": "none",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

@@ -1,0 +1,103 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "https://maven.minecraftforge.net" }
+        maven {url = "https://repo.spongepowered.org/maven"}
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'org.spongepowered.mixin'
+
+
+version = "1.0"
+group = "faulkner"
+archivesBaseName = "solitudinem"
+
+sourceCompatibility = targetCompatibility = '1.8'
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "1.12.2-14.23.5.2847"
+    runDir = "run"
+    mappings = "stable_39"
+}
+
+mixin {
+    add sourceSets.main, "mixins.solitudinem.refmap.json"
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "sponge"
+        url = "https://repo.spongepowered.org/maven"
+    }
+    maven {
+        name = 'jei'
+        url =  "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        name = "curseforge"
+        url "https://www.cursemaven.com"
+    }
+    maven {
+        name = 'blamejared'
+        url = 'https://maven.blamejared.com'
+    }
+    maven {
+        name = 'jared maven'
+        url = 'https://maven.blamejared.com/'
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', includes: ['*.jar'])
+
+    compile "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.20.636"
+    compile "CraftTweaker2:CraftTweaker2-API:4.1.20.636"
+    compile "CraftTweaker2:ZenScript:4.1.20.636"
+    compile "mezz.jei:jei_1.12.2:4.16.1.302"
+    compile('org.spongepowered:mixin:0.8') {
+        exclude module: 'guava'
+        exclude module: 'commons-io'
+        exclude module: 'gson'
+    }
+}
+
+processResources {
+
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+jar {
+    manifest {
+        attributes([
+                'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+                "ForceLoadAsMod": true
+        ])
+    }
+}
+
+repositories.each {
+    if (it instanceof MavenArtifactRepository && it.url.toString() == "https://files.minecraftforge.net/maven") {
+        it.url = "https://maven.minecraftforge.net/"
+    }
+}
